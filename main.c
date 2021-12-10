@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <malloc.h>
 #include <time.h>
+#include <limits.h>
 
 #define M 7
 #define MaxKey 100;
@@ -55,7 +56,7 @@ void printList(){
         printf("%i: ",i);
         while (tmp->key != -1){
             printf("%i",tmp->key);
-            printf(" -> ");
+            tmp->next->key != -1 ? printf(" -> ") : printf("");
             tmp = tmp->next;
         }
         printf("\n");
@@ -63,7 +64,42 @@ void printList(){
 }
 
 void printStats(){
+    int max = 0;
+    int countMax = 0;
 
+    int min = INT_MAX;
+    int countMin = 0;
+
+    double avg = 0;
+
+
+    for(int i = 0; i<M; i++){
+        int curLength = 0;
+        struct node* tmp = koepfe[i]->next;
+        while (tmp->key != -1){
+            curLength++;
+            tmp = tmp->next;
+        }
+        if(curLength > max){
+            countMax = 1;
+            max = curLength;
+        } else if (curLength == max){
+            countMax++;
+        }
+        if(curLength<min){
+            countMin = 1;
+            min = curLength;
+        } else if (curLength == min){
+            countMin++;
+        }
+        avg = (double) curLength + avg;
+
+    }
+    avg = (double) avg / M;
+
+    printf("Max: %i, Count: %i\n", max, countMax);
+    printf("Min: %i, Count: %i\n", min, countMin);
+    printf("Avg: %f", avg);
 }
 
 unsigned randomNumber(){
@@ -76,6 +112,7 @@ int main() {
         hashInsert(randomNumber());
     }
     printList();
+    printStats();
 }
 
 
